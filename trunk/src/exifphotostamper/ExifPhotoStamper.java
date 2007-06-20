@@ -11,10 +11,13 @@ import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifDirectory;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -262,12 +265,12 @@ public class ExifPhotoStamper implements Runnable {
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
         int startYear = cal.get(Calendar.YEAR);
-        int startMonth = cal.get(Calendar.MONTH);
+        int startMonth = cal.get(Calendar.MONTH)+1;
         int startDay = cal.get(Calendar.DAY_OF_MONTH);
 
         cal.setTime(endDate);
         int endYear = cal.get(Calendar.YEAR);
-        int endMonth = cal.get(Calendar.MONTH);
+        int endMonth = cal.get(Calendar.MONTH)+1;
         int endDay = cal.get(Calendar.DAY_OF_MONTH);
         int endHour = cal.get(Calendar.HOUR_OF_DAY);
         int endMinute = cal.get(Calendar.MINUTE);
@@ -293,11 +296,11 @@ public class ExifPhotoStamper implements Runnable {
             }else {
                 tmpM -= 1;
             }
-            cal.set(endYear, endMonth, 1);
+            cal.set(endYear, (endMonth-1), 1);
             long timeOfMonth = cal.getTimeInMillis();
-            cal.set(tmpY, tmpM, 1);
+            cal.set(tmpY, (tmpM-1), 1);
             long timeOfPrevMonth = cal.getTimeInMillis();
-            durationDay = (int)((timeOfMonth - timeOfPrevMonth)/86400) - startDay + endDay ;
+            durationDay = (int)( (timeOfMonth - timeOfPrevMonth)/86400000L ) - startDay + endDay ;
 
         }
         
