@@ -1,7 +1,7 @@
 /*
- * MainFrame.java
+ * MainFrame2.java
  *
- * Created on 2007年6月16日, 下午 9:28
+ * Created on 2007年6月20日, 下午 3:19
  */
 
 package exifphotostamper;
@@ -20,6 +20,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 
+
 /**
  *
  * @author  rack
@@ -28,15 +29,19 @@ public class MainFrame extends javax.swing.JFrame {
     
     private ComboBoxModel allSystemFonts = new DefaultComboBoxModel(java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
     private Color fontColor = Color.WHITE;
-    private ExifPhotoStamper stamp ;
-    /** Creates new form MainFrame */
+    private ExifPhotoStamper stamp ;    
+    
+    /** Creates new form MainFrame2 */
     public MainFrame() {
+        
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         }catch(Exception ex) {
             Logger.getLogger("global").log(Level.SEVERE, null, ex);
         }
+        
         initComponents();
+        
         cancelBtn.setEnabled(false);
         stamp = new exifphotostamper.ExifPhotoStamper();
         stamp.setUi(this);
@@ -48,6 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
         cornerOpt[3] = bundle.getString("BottomLeft");
         cornerCombo.setModel(new javax.swing.DefaultComboBoxModel(cornerOpt));
         loadProperties();
+        
     }
     
     /** This method is called from within the constructor to
@@ -63,36 +69,36 @@ public class MainFrame extends javax.swing.JFrame {
         sourceDirLabel = new javax.swing.JLabel();
         sourceDir = new javax.swing.JTextField();
         sourceDirBtn = new javax.swing.JButton();
-        targetDirLabel = new javax.swing.JLabel();
-        targetDir = new javax.swing.JTextField();
         targetDirBtn = new javax.swing.JButton();
-        cancelBtn = new javax.swing.JButton();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        startBtn = new javax.swing.JButton();
+        targetDir = new javax.swing.JTextField();
+        targetDirLabel = new javax.swing.JLabel();
         fontNameLabel = new javax.swing.JLabel();
         fontNameCombo = new javax.swing.JComboBox();
         fontSizeLabel = new javax.swing.JLabel();
         fontSize = new javax.swing.JTextField();
-        fontColorLabel = new javax.swing.JLabel();
-        fontColorValue = new javax.swing.JTextField();
         colorBtn = new javax.swing.JButton();
+        fontColorValue = new javax.swing.JTextField();
+        fontColorLabel = new javax.swing.JLabel();
         cornerLabel = new javax.swing.JLabel();
+        cornerCombo = new javax.swing.JComboBox();
+        margin = new javax.swing.JTextField();
+        pixels = new javax.swing.JLabel();
         marginLabel = new javax.swing.JLabel();
         qualityLabel = new javax.swing.JLabel();
-        cornerCombo = new javax.swing.JComboBox();
-        formatLabel = new javax.swing.JLabel();
-        format = new javax.swing.JTextField();
-        aboutBtn = new javax.swing.JButton();
-        formatLabel1 = new javax.swing.JLabel();
-        margin = new javax.swing.JTextField();
         quality = new javax.swing.JTextField();
-        pixels = new javax.swing.JLabel();
         qualityTips = new javax.swing.JLabel();
+        format = new javax.swing.JTextField();
+        formatLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        formatLabel1 = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        startBtn = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
+        aboutBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ExifPhotoStamper v1.0b");
+        setTitle("ExifPhotoStamper v1.0.1");
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("exifphotostamper/messages"); // NOI18N
         startDateLabel.setText(bundle.getString("StartDate")); // NOI18N
@@ -108,12 +114,66 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        targetDirLabel.setText(bundle.getString("TargetDirectory")); // NOI18N
-
         targetDirBtn.setText("...");
         targetDirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 targetDirBtnActionPerformed(evt);
+            }
+        });
+
+        targetDirLabel.setText(bundle.getString("TargetDirectory")); // NOI18N
+
+        fontNameLabel.setText(bundle.getString("FontName")); // NOI18N
+
+        fontNameCombo.setModel(allSystemFonts);
+
+        fontSizeLabel.setText(bundle.getString("FontSize")); // NOI18N
+
+        fontSize.setText("60");
+
+        colorBtn.setText("...");
+        colorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorBtnActionPerformed(evt);
+            }
+        });
+
+        fontColorValue.setText("[255,255,255]");
+
+        fontColorLabel.setText(bundle.getString("FontColor")); // NOI18N
+
+        cornerLabel.setText(bundle.getString("Corner")); // NOI18N
+
+        cornerCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        margin.setText("100");
+
+        pixels.setText(bundle.getString("Pixels")); // NOI18N
+
+        marginLabel.setText(bundle.getString("Margin")); // NOI18N
+
+        qualityLabel.setText(bundle.getString("Quality")); // NOI18N
+
+        quality.setText("0.8");
+
+        qualityTips.setText(bundle.getString("QualityTip")); // NOI18N
+
+        format.setText("(%Yy%Mm%Dd) %y/%m/%d");
+
+        formatLabel.setText(bundle.getString("Format")); // NOI18N
+
+        jTextPane1.setEditable(false);
+        jTextPane1.setText(bundle.getString("FormatTip")); // NOI18N
+        jScrollPane1.setViewportView(jTextPane1);
+
+        formatLabel1.setText(bundle.getString("Progress")); // NOI18N
+
+        jProgressBar1.setStringPainted(true);
+
+        startBtn.setText(bundle.getString("StartButton")); // NOI18N
+        startBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startBtnActionPerformed(evt);
             }
         });
 
@@ -124,44 +184,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        startBtn.setText(bundle.getString("StartButton")); // NOI18N
-        startBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startBtnActionPerformed(evt);
-            }
-        });
-
-        fontNameLabel.setText(bundle.getString("FontName")); // NOI18N
-
-        fontNameCombo.setModel(allSystemFonts);
-
-        fontSizeLabel.setText(bundle.getString("FontSize")); // NOI18N
-
-        fontSize.setText("60");
-
-        fontColorLabel.setText(bundle.getString("FontColor")); // NOI18N
-
-        fontColorValue.setText("[255,255,255]");
-
-        colorBtn.setText("...");
-        colorBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                colorBtnActionPerformed(evt);
-            }
-        });
-
-        cornerLabel.setText(bundle.getString("Corner")); // NOI18N
-
-        marginLabel.setText(bundle.getString("Margin")); // NOI18N
-
-        qualityLabel.setText(bundle.getString("Quality")); // NOI18N
-
-        cornerCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        formatLabel.setText(bundle.getString("Format")); // NOI18N
-
-        format.setText("(%Yy%Mm%Dd) %y/%m/%d");
-
         aboutBtn.setText(bundle.getString("AboutButton")); // NOI18N
         aboutBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,149 +191,188 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        formatLabel1.setText(bundle.getString("Progress")); // NOI18N
-
-        margin.setText("100");
-
-        quality.setText("0.8");
-
-        pixels.setText(bundle.getString("Pixels")); // NOI18N
-
-        qualityTips.setText(bundle.getString("QualityTip")); // NOI18N
-
-        jTextPane1.setEditable(false);
-        jTextPane1.setText(bundle.getString("FormatTip")); // NOI18N
-        jScrollPane1.setViewportView(jTextPane1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(formatLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(qualityLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(marginLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cornerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(fontColorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(fontNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(targetDirLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(sourceDirLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(startDateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(fontNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                        .addComponent(fontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(fontSize, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(sourceDir, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(sourceDirBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(targetDir, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(targetDirBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fontColorValue, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(colorBtn, 0, 83, Short.MAX_VALUE))
-                                    .addComponent(cornerCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(startDate, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
-                                    .addComponent(format, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(margin, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(quality, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(pixels, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(qualityTips, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(formatLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(aboutBtn)
-                                .addGap(75, 75, 75))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(formatLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(qualityLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(marginLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(cornerLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(fontColorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(fontNameLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(targetDirLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(sourceDirLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(startDateLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 104, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(fontNameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 352, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 30, Short.MAX_VALUE)
+                                .add(fontSizeLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(fontSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 36, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(layout.createSequentialGroup()
+                                .add(sourceDir, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(sourceDirBtn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                            .add(layout.createSequentialGroup()
+                                .add(targetDir, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(targetDirBtn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                            .add(layout.createSequentialGroup()
+                                .add(fontColorValue, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(colorBtn, 0, 83, Short.MAX_VALUE))
+                            .add(cornerCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 167, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(startDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+                            .add(format, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+                            .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, margin)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, quality, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(pixels, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 91, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(qualityTips, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                    .add(layout.createSequentialGroup()
+                        .add(118, 118, 118)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 454, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(formatLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jProgressBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)))
+                .add(20, 20, 20))
+            .add(layout.createSequentialGroup()
+                .add(191, 191, 191)
+                .add(startBtn, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 74, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(cancelBtn)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(aboutBtn)
+                .addContainerGap(214, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startDateLabel, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(startDate, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sourceDirLabel, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(sourceDir, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sourceDirBtn, javax.swing.GroupLayout.Alignment.CENTER))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(targetDirLabel, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(targetDir, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(targetDirBtn, javax.swing.GroupLayout.Alignment.CENTER))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(fontNameLabel)
-                    .addComponent(fontSizeLabel)
-                    .addComponent(fontSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fontNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fontColorLabel, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(fontColorValue, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(colorBtn, javax.swing.GroupLayout.Alignment.CENTER))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cornerLabel, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(cornerCombo, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(marginLabel)
-                    .addComponent(margin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pixels))
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(qualityLabel, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(quality, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(qualityTips, javax.swing.GroupLayout.Alignment.CENTER))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(formatLabel, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(format, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(formatLabel1, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(aboutBtn)
-                    .addComponent(cancelBtn)
-                    .addComponent(startBtn))
-                .addGap(25, 25, 25))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, startDateLabel)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, startDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, sourceDirLabel)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, sourceDir, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, sourceDirBtn))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, targetDirLabel)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, targetDir, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, targetDirBtn))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(fontNameLabel)
+                    .add(fontSizeLabel)
+                    .add(fontSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(fontNameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, fontColorLabel)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, fontColorValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, colorBtn))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, cornerLabel)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, cornerCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(22, 22, 22)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(marginLabel)
+                    .add(margin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(pixels))
+                .add(16, 16, 16)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, qualityLabel)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, quality, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, qualityTips))
+                .add(13, 13, 13)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, formatLabel)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, format, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, formatLabel1)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, jProgressBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 37, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(cancelBtn)
+                    .add(aboutBtn)
+                    .add(startBtn))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void aboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutBtnActionPerformed
+    StringBuffer sb = new StringBuffer("ExifPhotoStamper v1.0b \n\n");
+    sb.append("Copyright (c) 2007 Rack Lin (racklin.blogspot.com) \n");
+    sb.append("Email: racklin@gmail.com \n");
+    sb.append("My Chinese Blog:  http://racklin.blogspot.com/");
+    javax.swing.JOptionPane.showMessageDialog(this, sb.toString());
+}//GEN-LAST:event_aboutBtnActionPerformed
+
+private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+    startBtn.setEnabled(true);                                         
+    cancelBtn.setEnabled(false);
+    stamp.setStop(true);
+}//GEN-LAST:event_cancelBtnActionPerformed
+
+private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBtnActionPerformed
+    File srcDir = new File(sourceDir.getText());
+    File tgtDir = new File(targetDir.getText());
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("exifphotostamper/messages"); // NOI18N
+    
+    if (!srcDir.isDirectory() || !srcDir.canRead() || sourceDir.getText().length() == 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, sourceDir.getText() + bundle.getString("NotExists"));
+        return ;
+    }
+    
+    if (!tgtDir.isDirectory() || targetDir.getText().length() == 0) {
+        if(!tgtDir.mkdir()) {
+            javax.swing.JOptionPane.showMessageDialog(this, targetDir.getText() + bundle.getString("CannotWrite"));
+            return ;
+        }
+    }
+    
+    if (sourceDir.getText().equalsIgnoreCase(targetDir.getText())) {
+        javax.swing.JOptionPane.showMessageDialog(this, bundle.getString("SourceTargetTheSame"));
+        return ;
+    }
+    
+    startBtn.setEnabled(false);
+    cancelBtn.setEnabled(true);
+    stamp.setStop(false);
+    stamp.setSourceDir(sourceDir.getText());
+    stamp.setTargetDir(targetDir.getText());
+    stamp.setStartDate(startDate.getText());
+    stamp.setFontColor(fontColor);
+    stamp.setFontName((String)fontNameCombo.getSelectedItem());
+    stamp.setFontSize(Integer.parseInt(fontSize.getText()));
+    stamp.setFormat(format.getText());
+    stamp.setMargin(Integer.parseInt(margin.getText()));
+    stamp.setQuality(Float.parseFloat(quality.getText()));
+    stamp.setCorner(cornerCombo.getSelectedIndex()+1);
+    storeProperties();
+    (new Thread(stamp)).start();
+}//GEN-LAST:event_startBtnActionPerformed
+
     
 private void loadProperties() {
         java.io.File propFile = new java.io.File(java.lang.System.getProperty("user.dir"), "setup.properties");
@@ -366,88 +427,49 @@ private void storeProperties() {
                 Logger.getLogger("global").log(Level.SEVERE, null, ex);
             }        
         
-}
+}    
 
-private void aboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutBtnActionPerformed
-    
-    StringBuffer sb = new StringBuffer("ExifPhotoStamper v1.0b \n\n");
-    sb.append("Copyright (c) 2007 Rack Lin (racklin.blogspot.com) \n");
-    sb.append("Email: racklin@gmail.com \n");
-    sb.append("My Chinese Blog:  http://racklin.blogspot.com/");
-    javax.swing.JOptionPane.showMessageDialog(this, sb.toString());
-}//GEN-LAST:event_aboutBtnActionPerformed
-
-private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-    
-    startBtn.setEnabled(true);//GEN-LAST:event_cancelBtnActionPerformed
-    cancelBtn.setEnabled(false);
-    stamp.setStop(true);
-    
-}
-
-private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBtnActionPerformed
-    
-    File srcDir = new File(sourceDir.getText());
-    File tgtDir = new File(targetDir.getText());
-    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("exifphotostamper/messages"); // NOI18N
-    
-    if (!srcDir.isDirectory() || !srcDir.canRead() || sourceDir.getText().length() == 0) {
-        javax.swing.JOptionPane.showMessageDialog(this, sourceDir.getText() + bundle.getString("NotExists"));
-        return ;
+    public void finishAllFiles() {
+        startBtn.setEnabled(true);
+        cancelBtn.setEnabled(false);
     }
     
-    if (!tgtDir.isDirectory() || targetDir.getText().length() == 0) {
-        if(!tgtDir.mkdir()) {
-            javax.swing.JOptionPane.showMessageDialog(this, targetDir.getText() + bundle.getString("CannotWrite"));
-            return ;
-        }
+    public void finishFileIndex(int index) {
+        jProgressBar1.setValue((index+1));
+        
+        int now = jProgressBar1.getValue();
+        int total = jProgressBar1.getMaximum();
+        int percent = (int) java.lang.Math.ceil( ((double) now / (double) total) * 100 );
+        StringBuffer sb = new StringBuffer();
+        sb.append("(" + now + "/" + total +")");
+        sb.append(" "+percent+" %");
+        jProgressBar1.setString(sb.toString());
+        
     }
     
-    if (sourceDir.getText().equalsIgnoreCase(targetDir.getText())) {
-        javax.swing.JOptionPane.showMessageDialog(this, bundle.getString("SourceTargetTheSame"));
-        return ;
+    public void setFilesCount(int count) {
+        jProgressBar1.setMaximum(count);
     }
-    
-    startBtn.setEnabled(false);
-    cancelBtn.setEnabled(true);
-    stamp.setStop(false);
-    stamp.setSourceDir(sourceDir.getText());
-    stamp.setTargetDir(targetDir.getText());
-    stamp.setStartDate(startDate.getText());
-    stamp.setFontColor(fontColor);
-    stamp.setFontName((String)fontNameCombo.getSelectedItem());
-    stamp.setFontSize(Integer.parseInt(fontSize.getText()));
-    stamp.setFormat(format.getText());
-    stamp.setMargin(Integer.parseInt(margin.getText()));
-    stamp.setQuality(Float.parseFloat(quality.getText()));
-    stamp.setCorner(cornerCombo.getSelectedIndex()+1);
-    storeProperties();
-    (new Thread(stamp)).start();
-    
-}//GEN-LAST:event_startBtnActionPerformed
+  
 
 private void colorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBtnActionPerformed
-    
     javax.swing.JColorChooser dialog = new JColorChooser();
     fontColor = dialog.showDialog(colorBtn,"", fontColor);
     if (fontColor != null) fontColorValue.setText("[" + fontColor.getRed() + "," + fontColor.getGreen()+","+ fontColor.getBlue()+"]");
 }//GEN-LAST:event_colorBtnActionPerformed
 
 private void targetDirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_targetDirBtnActionPerformed
-    
     JFileChooser dialog = new JFileChooser();
     dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     dialog.showOpenDialog(targetDirBtn);
     if (dialog.getSelectedFile() != null) targetDir.setText(dialog.getSelectedFile().toString());
 }//GEN-LAST:event_targetDirBtnActionPerformed
 
-    private void sourceDirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sourceDirBtnActionPerformed
-        
-        JFileChooser dialog = new JFileChooser();
-        dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        dialog.showOpenDialog(sourceDirBtn);
-        if (dialog.getSelectedFile() != null) sourceDir.setText(dialog.getSelectedFile().toString());
-        
+private void sourceDirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sourceDirBtnActionPerformed
+    JFileChooser dialog = new JFileChooser();
+    dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    dialog.showOpenDialog(sourceDirBtn);
+    if (dialog.getSelectedFile() != null) sourceDir.setText(dialog.getSelectedFile().toString());
 }//GEN-LAST:event_sourceDirBtnActionPerformed
     
     /**
@@ -495,18 +517,5 @@ private void targetDirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JButton targetDirBtn;
     private javax.swing.JLabel targetDirLabel;
     // End of variables declaration//GEN-END:variables
-    
-    public void finishAllFiles() {
-        startBtn.setEnabled(true);
-        cancelBtn.setEnabled(false);
-    }
-    
-    public void finishFileIndex(int index) {
-        jProgressBar1.setValue((index+1));
-    }
-    
-    public void setFilesCount(int count) {
-        jProgressBar1.setMaximum(count);
-    }
     
 }
