@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -20,9 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JTextField;
 
 /**
  *
@@ -35,7 +31,11 @@ public class MainFrame extends javax.swing.JFrame {
     private ExifPhotoStamper stamp ;
     /** Creates new form MainFrame */
     public MainFrame() {
-        
+        try {
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+        }catch(Exception ex) {
+            Logger.getLogger("global").log(Level.SEVERE, null, ex);
+        }
         initComponents();
         cancelBtn.setEnabled(false);
         stamp = new exifphotostamper.ExifPhotoStamper();
