@@ -29,6 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private ComboBoxModel allSystemFonts = new DefaultComboBoxModel(java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
     private Color fontColor = Color.WHITE;
+    private Color fontBorderColor = Color.WHITE;
     private ExifPhotoStamper stamp ;    
     
     /** Creates new form MainFrame2 */
@@ -96,9 +97,13 @@ public class MainFrame extends javax.swing.JFrame {
         startBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
         aboutBtn = new javax.swing.JButton();
+        fontBorderColorLabel = new javax.swing.JLabel();
+        fontBorderColorValue = new javax.swing.JTextField();
+        colorBorderBtn = new javax.swing.JButton();
+        shadowCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ExifPhotoStamper v1.0.1");
+        setTitle("ExifPhotoStamper v1.0.2");
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("exifphotostamper/messages"); // NOI18N
         startDateLabel.setText(bundle.getString("StartDate")); // NOI18N
@@ -138,6 +143,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        fontColorValue.setEditable(false);
         fontColorValue.setText("[255,255,255]");
 
         fontColorLabel.setText(bundle.getString("FontColor")); // NOI18N
@@ -191,6 +197,22 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        fontBorderColorLabel.setText(bundle.getString("FontBorderColor")); // NOI18N
+
+        fontBorderColorValue.setEditable(false);
+        fontBorderColorValue.setText("[255,255,255]");
+
+        colorBorderBtn.setText("...");
+        colorBorderBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorBorderBtnActionPerformed(evt);
+            }
+        });
+
+        shadowCheckBox.setText(bundle.getString("Shadow")); // NOI18N
+        shadowCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        shadowCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -225,11 +247,6 @@ public class MainFrame extends javax.swing.JFrame {
                                 .add(targetDir, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(targetDirBtn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
-                            .add(layout.createSequentialGroup()
-                                .add(fontColorValue, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(colorBtn, 0, 83, Short.MAX_VALUE))
-                            .add(cornerCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 167, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(startDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                             .add(format, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                             .add(layout.createSequentialGroup()
@@ -238,8 +255,26 @@ public class MainFrame extends javax.swing.JFrame {
                                     .add(org.jdesktop.layout.GroupLayout.LEADING, quality, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(pixels, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 91, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(qualityTips, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                                    .add(qualityTips, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(pixels, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 91, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 185, Short.MAX_VALUE))
+                            .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createSequentialGroup()
+                                        .add(fontColorValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(colorBtn))
+                                    .add(cornerCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 167, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(40, 40, 40)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createSequentialGroup()
+                                        .add(fontBorderColorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(fontBorderColorValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 117, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(colorBorderBtn)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .add(shadowCheckBox)))))
                     .add(layout.createSequentialGroup()
                         .add(118, 118, 118)
                         .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 454, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -281,14 +316,18 @@ public class MainFrame extends javax.swing.JFrame {
                     .add(fontSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(fontNameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.CENTER, fontColorLabel)
-                    .add(org.jdesktop.layout.GroupLayout.CENTER, fontColorValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(org.jdesktop.layout.GroupLayout.CENTER, colorBtn))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(fontColorLabel)
+                    .add(colorBtn)
+                    .add(fontColorValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(fontBorderColorLabel)
+                    .add(colorBorderBtn)
+                    .add(fontBorderColorValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.CENTER, cornerLabel)
-                    .add(org.jdesktop.layout.GroupLayout.CENTER, cornerCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, cornerCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.CENTER, shadowCheckBox))
                 .add(22, 22, 22)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(marginLabel)
@@ -320,8 +359,15 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void colorBorderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBorderBtnActionPerformed
+        javax.swing.JColorChooser dialog = new JColorChooser();
+        fontBorderColor = dialog.showDialog(colorBorderBtn,"", fontBorderColor);
+        if (fontBorderColor != null) fontBorderColorValue.setText("[" + fontBorderColor.getRed() + "," + fontBorderColor.getGreen()+","+ fontBorderColor.getBlue()+"]");
+
+}//GEN-LAST:event_colorBorderBtnActionPerformed
+
 private void aboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutBtnActionPerformed
-    StringBuffer sb = new StringBuffer("ExifPhotoStamper v1.0b \n\n");
+    StringBuffer sb = new StringBuffer("ExifPhotoStamper v1.0.2 \n\n");
     sb.append("Copyright (c) 2007 Rack Lin (racklin.blogspot.com) \n");
     sb.append("Email: racklin@gmail.com \n");
     sb.append("My Chinese Blog:  http://racklin.blogspot.com/");
@@ -363,12 +409,14 @@ private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     stamp.setTargetDir(targetDir.getText());
     stamp.setStartDate(startDate.getText());
     stamp.setFontColor(fontColor);
+    stamp.setFontBorderColor(fontBorderColor);
     stamp.setFontName((String)fontNameCombo.getSelectedItem());
     stamp.setFontSize(Integer.parseInt(fontSize.getText()));
     stamp.setFormat(format.getText());
     stamp.setMargin(Integer.parseInt(margin.getText()));
     stamp.setQuality(Float.parseFloat(quality.getText()));
     stamp.setCorner(cornerCombo.getSelectedIndex()+1);
+    stamp.setShadow(shadowCheckBox.isSelected());
     storeProperties();
     (new Thread(stamp)).start();
 }//GEN-LAST:event_startBtnActionPerformed
@@ -392,14 +440,18 @@ private void loadProperties() {
                 quality.setText((String) prop.get("quality"));
                 fontColor = new Color(Integer.parseInt((String)prop.get("fontColor")));
                 fontColorValue.setText("[" + fontColor.getRed() + "," + fontColor.getGreen()+","+ fontColor.getBlue()+"]");
+                fontBorderColor = new Color(Integer.parseInt((String)prop.get("fontBorderColor")));
+                fontBorderColorValue.setText("[" + fontBorderColor.getRed() + "," + fontBorderColor.getGreen()+","+ fontBorderColor.getBlue()+"]");
                 
                 int fontNameIdx = ((DefaultComboBoxModel)fontNameCombo.getModel()).getIndexOf((String) prop.get("fontName") );
                 fontNameCombo.setSelectedIndex(fontNameIdx);
 
                 cornerCombo.setSelectedIndex(Integer.parseInt((String) prop.get("corner")));
                 
+                shadowCheckBox.setSelected(Boolean.parseBoolean((String) prop.get("shadow")));
+                
             } catch (Exception ex) {
-                ex.printStackTrace();
+                // ex.printStackTrace();
                 Logger.getLogger("global").log(Level.SEVERE, null, ex);
             }
         }    
@@ -417,10 +469,12 @@ private void storeProperties() {
                 prop.put("fontName", fontNameCombo.getSelectedItem());
                 prop.put("fontSize", fontSize.getText());
                 prop.put("fontColor", (Integer.valueOf(fontColor.getRGB())).toString());
+                prop.put("fontBorderColor", (Integer.valueOf(fontBorderColor.getRGB())).toString());
                 prop.put("margin", margin.getText());
                 prop.put("corner", Integer.toString(cornerCombo.getSelectedIndex()));
                 prop.put("format", format.getText());
                 prop.put("quality", quality.getText());
+                prop.put("shadow", Boolean.toString(shadowCheckBox.isSelected()));
                 prop.store(os, "ExifPhotoStamper v1.0b");
                 os.close();
             } catch (Exception ex) {
@@ -486,9 +540,12 @@ private void sourceDirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aboutBtn;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton colorBorderBtn;
     private javax.swing.JButton colorBtn;
     private javax.swing.JComboBox cornerCombo;
     private javax.swing.JLabel cornerLabel;
+    private javax.swing.JLabel fontBorderColorLabel;
+    private javax.swing.JTextField fontBorderColorValue;
     private javax.swing.JLabel fontColorLabel;
     private javax.swing.JTextField fontColorValue;
     private javax.swing.JComboBox fontNameCombo;
@@ -507,6 +564,7 @@ private void sourceDirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JTextField quality;
     private javax.swing.JLabel qualityLabel;
     private javax.swing.JLabel qualityTips;
+    private javax.swing.JCheckBox shadowCheckBox;
     private javax.swing.JTextField sourceDir;
     private javax.swing.JButton sourceDirBtn;
     private javax.swing.JLabel sourceDirLabel;
