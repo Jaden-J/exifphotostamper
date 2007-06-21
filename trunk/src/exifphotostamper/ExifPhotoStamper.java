@@ -11,6 +11,7 @@ import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifDirectory;
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -47,12 +48,30 @@ public class ExifPhotoStamper implements Runnable {
     private String targetDir = "c:\\tmp\\shine\\out";
     private String startDate = "2006/11/02";
     private Color fontColor = Color.WHITE;
+    private Color fontBorderColor = Color.WHITE;
     private String fontName = "dialog";
     private int fontSize = 60;
     private String format = "(%Yy%Mm%Dd) %y-%m-%d";
     private float quality = 0.85F;
     private int corner = 3;
     private int margin = 100;
+    private boolean shadow = false;
+
+    public boolean isShadow() {
+        return shadow;
+    }
+
+    public void setShadow(boolean shadow) {
+        this.shadow = shadow;
+    }
+
+    public Color getFontBorderColor() {
+        return fontBorderColor;
+    }
+
+    public void setFontBorderColor(Color fontBorderColor) {
+        this.fontBorderColor = fontBorderColor;
+    }
 
     public int getMargin() {
         return margin;
@@ -180,7 +199,7 @@ public class ExifPhotoStamper implements Runnable {
         });
         
         
-        ((MainFrame) ui).setFilesCount(imgFiles.length);
+        if(ui != null) ((MainFrame) ui).setFilesCount(imgFiles.length);
         
         for (int i=0; i < imgFiles.length; i++) {
             if (stop)  break;
@@ -210,9 +229,8 @@ public class ExifPhotoStamper implements Runnable {
                 IIOImage iioi = reader.readAll(0, reader.getDefaultReadParam());
                 BufferedImage imgSrc =(BufferedImage) iioi.getRenderedImage();
                 Graphics2D g = (Graphics2D) imgSrc.getGraphics();
-                g.setColor(fontColor);
                 g.setFont(font);
-                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 FontRenderContext frc = g.getFontRenderContext();
                 Rectangle2D rectString = font.getStringBounds(formatedString, frc);
                 double height = rectString.getHeight();
@@ -240,7 +258,30 @@ public class ExifPhotoStamper implements Runnable {
                     break;
                 }
                 
-                g.drawString(formatedString, left, top);
+                AlphaComposite a1 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
+                AlphaComposite a2 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+                Shape fontShape = font.createGlyphVector(frc, formatedString).getOutline();
+                
+                if (isShadow()) {
+                    g.translate(left+3, top+3);
+                    g.setComposite(a1);
+                    g.setColor(Color.BLACK);
+                    g.fill(fontShape);
+                    left = -3;
+                    top = -3;
+                    g.setComposite(a2);
+                }
+                
+                g.translate(left, top);
+                g.setColor(fontColor);
+                g.fill(fontShape);
+                
+                if (!fontColor.equals(fontBorderColor)) {
+                    Stroke stroke = new BasicStroke(2);                    
+                    g.setStroke(stroke);
+                    g.setColor(fontBorderColor);
+                    g.draw(fontShape);
+                }
                 File outFile = new File(targetDir, imgFiles[i].getName());
                 ImageOutputStream ios = ImageIO.createImageOutputStream(outFile);
                 writer.setOutput(ios);
@@ -251,13 +292,13 @@ public class ExifPhotoStamper implements Runnable {
                 reader.dispose();
                 writer.dispose();
                 
-                ((MainFrame) ui).finishFileIndex(i);
+                if(ui != null) ((MainFrame) ui).finishFileIndex(i);
             } catch (Exception ex) {
                 Logger.getLogger("global").log(Level.SEVERE, null, ex);
             }
         }
         
-        ((MainFrame) ui).finishAllFiles();
+        if(ui != null) ((MainFrame) ui).finishAllFiles();
     }
     
     public String getFormatedDateString(Date startDate, Date endDate, String format) {
